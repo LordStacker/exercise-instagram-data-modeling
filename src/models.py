@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from eralchemy import render_er
+import enum
 
 Base = declarative_base()
 """
@@ -42,7 +43,7 @@ class User(Base):
 class Media(Base):
     __tablename__ = 'media'
     id = Column(Integer, primary_key=True)
-    type = Column(enumerate(250))
+    type = Column(enum(250))
     url = Column(String(250))
     post_id = Column(Integer, nullable=False)
 class Post(Base):
