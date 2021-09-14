@@ -1,11 +1,10 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Enum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from eralchemy import render_er
-import enum
 
 Base = declarative_base()
 """
@@ -47,7 +46,7 @@ class Followers(Base):
 class Media(Base):
     __tablename__ = 'media'
     id = Column(Integer, primary_key=True)
-    type = Column(Enum(250))
+    type = Column(Enum("video","image"))
     url = Column(String(250))
     post_id = Column(Integer, ForeignKey("post.id"))
     comment = relationship('Comment')
