@@ -27,12 +27,6 @@ class Address(Base):
     person_id = Column(Integer, ForeignKey('person.id'))
     person = relationship(Person)
 """
-class Followers(Base):
-    __tablename__ = 'followers'
-    id = Column(Integer, primary_key=True)
-    user_from_id = Column(Integer, nullable=False)
-    user_to_id = Column(Integer, nullable=False)
-
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
@@ -40,22 +34,34 @@ class User(Base):
     firstname = Column(String(250))
     lastname = Column(String(250))
     email = Column(String(250))
+    followers = relationship('Followers')
+    post = relationship('Post')
+    comment = relationship('Comment')
+    
+class Followers(Base):
+    __tablename__ = 'followers'
+    id = Column(Integer, primary_key=True)
+    user_from_id = Column(Integer, ForeignKey("user.id"))
+    user_to_id = Column(Integer, ForeignKey("user.id"))
+    
 class Media(Base):
     __tablename__ = 'media'
     id = Column(Integer, primary_key=True)
-    type = Column(enum(250))
+    type = Column(String(250))
     url = Column(String(250))
-    post_id = Column(Integer, nullable=False)
+    post_id = Column(Integer, ForeignKey("post.id"))
+    comment = relationship('Comment')
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
 class Comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     comment_text = Column(String(250))
-    author_id = Column(Integer, nullable=False)
-    post_id = Column(Integer, nullable=False)
+    author_id = Column(Integer, ForeignKey('user.id'))
+    post_id = Column(Integer, ForeignKey("post.id"))
 
 
     def to_dict(self):
